@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gen-alg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gen-alg
+  template:
+    metadata:
+      labels:
+        app: gen-alg
+    spec:
+      containers:
+      - name: gen-alg-container
+        image: dfaustino/schedulingkitt:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gen-alg-service
+spec:
+  selector:
+    app: gen-alg
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
